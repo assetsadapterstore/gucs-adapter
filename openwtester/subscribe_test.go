@@ -21,7 +21,6 @@ import (
 	"github.com/blocktree/openwallet/v2/log"
 	"github.com/blocktree/openwallet/v2/openw"
 	"github.com/blocktree/openwallet/v2/openwallet"
-	"github.com/blocktree/quorum-adapter/quorum"
 	"path/filepath"
 	"testing"
 )
@@ -81,7 +80,7 @@ func TestSubscribeAddress_GUCS(t *testing.T) {
 		return
 	}
 	scanner.SetBlockScanTargetFuncV2(testScanTargetFunc(symbol))
-	scanner.SetRescanBlockHeight(9958346)
+	//scanner.SetRescanBlockHeight(9958346)
 	scanner.Run()
 
 	<-endRunning
@@ -139,24 +138,12 @@ func testScanTargetFunc(symbol string) openwallet.BlockScanTargetFuncV2 {
 		addrs  = make(map[string]openwallet.ScanTargetResult)
 	)
 
-	//添加监听的合约地址
-	contract := &openwallet.SmartContract{
-		Symbol:   symbol,
-		Address:  "0xdac17f958d2ee523a2206206994597c13d831ec7",
-		Decimals: 2,
-	}
-	contract.ContractID = openwallet.GenContractID(contract.Symbol, contract.Address)
-	contract.SetABI(quorum.ERC20_ABI_JSON)
-	addrs[contract.Address] = openwallet.ScanTargetResult{SourceKey: contract.ContractID, Exist: true, TargetInfo: contract}
-
 	//添加监听的外部地址
-	addrs["0x0ff8d979e33412a2904a66226ff6a336d7c873db"] = openwallet.ScanTargetResult{SourceKey: "sender", Exist: true}
+	addrs["0x96e9393d557071ad7a58c8c2a9db5bcbbfa3ed64"] = openwallet.ScanTargetResult{SourceKey: "sender", Exist: true}
 	addrs["0x4492da4ea423b61ad426bd4ce159a8dfbcfcabdd"] = openwallet.ScanTargetResult{SourceKey: "receiver", Exist: true}
 
 	scanTargetFunc := func(target openwallet.ScanTargetParam) openwallet.ScanTargetResult {
-		if target.ScanTargetType == openwallet.ScanTargetTypeContractAddress {
-			return addrs[target.ScanTarget]
-		} else if target.ScanTargetType == openwallet.ScanTargetTypeAccountAddress {
+		if target.ScanTargetType == openwallet.ScanTargetTypeAccountAddress {
 			return addrs[target.ScanTarget]
 		}
 		return openwallet.ScanTargetResult{SourceKey: "", Exist: false, TargetInfo: nil,}
