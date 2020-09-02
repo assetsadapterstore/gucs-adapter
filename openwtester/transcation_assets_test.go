@@ -49,7 +49,7 @@ func testCreateTransactionStep(tm *openw.WalletManager, walletID, accountID, to,
 	//	return nil, err
 	//}
 
-	rawTx, err := tm.CreateTransaction(testApp, walletID, accountID, amount, to, feeRate, "", contract)
+	rawTx, err := tm.CreateTransaction(testApp, walletID, accountID, amount, to, feeRate, "", contract, nil)
 
 	if err != nil {
 		log.Error("CreateTransaction failed, unexpected error:", err)
@@ -122,11 +122,14 @@ func TestTransfer_GUCS(t *testing.T) {
 
 	addrs := []string{
 		"0x0bd8bf9d37f7ce0935bb1337429149baa9af2891",
-		"0x17c1c47a3417ad95a22dfffc70fa784cca3b9b33",
-		"0x1e92aa6a8378ab0db3f158812bcbbacdefdd13ec",
-		"0x825336487f01e73194a3c5248af43ee2ac928b84",
-		"0xadf513cf23e45f08246df9fbe409e4be269f98d6",
-		"0xf69bbb1a1f5bc7b8877458987d16e3ed90e55755",
+		//"0x17c1c47a3417ad95a22dfffc70fa784cca3b9b33",
+		//"0x1e92aa6a8378ab0db3f158812bcbbacdefdd13ec",
+		//"0x825336487f01e73194a3c5248af43ee2ac928b84",
+		//"0xadf513cf23e45f08246df9fbe409e4be269f98d6",
+		//"0xf69bbb1a1f5bc7b8877458987d16e3ed90e55755",
+
+		//"0x8c028c4d12d23f2255c3e91b9e71e87cfd06ef0e",
+		//"0xaeab1e8c8fafced0f656cbc95f3bb2ddc01ea415",
 	}
 
 	tm := testInitWalletManager()
@@ -136,7 +139,7 @@ func TestTransfer_GUCS(t *testing.T) {
 	testGetAssetsAccountBalance(tm, walletID, accountID)
 
 	for _, to := range addrs {
-		rawTx, err := testCreateTransactionStep(tm, walletID, accountID, to, "11.23456789", "", nil)
+		rawTx, err := testCreateTransactionStep(tm, walletID, accountID, to, "10", "", nil)
 		if err != nil {
 			return
 		}

@@ -107,7 +107,7 @@ func TestWalletManager_GetAssetsAccountBalance(t *testing.T) {
 	tm := testInitWalletManager()
 	walletID := "WLCL9JUiYA8jLVhH2kjVZduofZovf4yo3A"
 	accountID := "3dv8NH8xMUXAo2zMwZ6gAJqs74dYLg5zFSf3FVEDLdVv"
-
+	//accountID := "A7JDAgYxo9fU2PoFg6YWHpntnBS91xFAbqX3B7jcifPA"
 	balance, err := tm.GetAssetsAccountBalance(testApp, walletID, accountID)
 	if err != nil {
 		log.Error("GetAssetsAccountBalance failed, unexpected error:", err)
@@ -150,8 +150,9 @@ func TestWalletManager_GetEstimateFeeRate(t *testing.T) {
 	log.Std.Info("feeRate: %s %s/%s", feeRate, coin.Symbol, unit)
 }
 
-func TestGetAddressBalance(t *testing.T) {
-	symbol := "VSYS"
+
+func TestGetAddressVerify(t *testing.T) {
+	symbol := "GUCS"
 	assetsMgr, err := openw.GetAssetsAdapter(symbol)
 	if err != nil {
 		log.Error(symbol, "is not support")
@@ -165,25 +166,15 @@ func TestGetAddressBalance(t *testing.T) {
 		return
 	}
 	assetsMgr.LoadAssetsConfig(c)
-	bs := assetsMgr.GetBlockScanner()
+	addrDec := assetsMgr.GetAddressDecoderV2()
 
-	addrs := []string{
-		"AR5D3fGVWDz32wWCnVbwstsMW8fKtWdzNFT",
-		"AR9qbgbsmLh3ADSU9ngR22J2HpD5D9ncTCg",
-		"ARAA8AnUYa4kWwWkiZTTyztG5C6S9MFTx11",
-		"ARCUYWyLvGDTrhZ6K9jjMh9B5iRVEf3vRzs",
-		"ARGehumz77nGcfkQrPjK4WUyNevvU9NCNqQ",
-		"ARJdaB9Fo6Sk2nxBrQP2p4woWotPxjaebCv",
-	}
+	flag := addrDec.AddressVerify("0x4402a2969da0689a0e6f5fbad8be930430b4ad63af25f3c93dbd03bb40908d08")
+	log.Infof("flag: %v, expect: false", flag)
 
-	balances, err := bs.GetBalanceByAddress(addrs...)
-	if err != nil {
-		log.Errorf(err.Error())
-		return
-	}
-	for _, b := range balances {
-		log.Infof("balance[%s] = %s", b.Address, b.Balance)
-		log.Infof("UnconfirmBalance[%s] = %s", b.Address, b.UnconfirmBalance)
-		log.Infof("ConfirmBalance[%s] = %s", b.Address, b.ConfirmBalance)
-	}
+	flag = addrDec.AddressVerify("6541a59bd17cf20f058e8b5377f034a32843410f")
+	log.Infof("flag: %v, expect: false", flag)
+
+	flag = addrDec.AddressVerify("0x6541a59bd17cf20f058e8b5377f034a32843410f")
+	log.Infof("flag: %v, expect: true", flag)
+
 }

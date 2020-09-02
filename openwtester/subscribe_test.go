@@ -80,7 +80,7 @@ func TestSubscribeAddress_GUCS(t *testing.T) {
 		return
 	}
 	scanner.SetBlockScanTargetFuncV2(testScanTargetFunc(symbol))
-	//scanner.SetRescanBlockHeight(9958346)
+	scanner.SetRescanBlockHeight(373066)
 	scanner.Run()
 
 	<-endRunning
@@ -140,7 +140,7 @@ func testScanTargetFunc(symbol string) openwallet.BlockScanTargetFuncV2 {
 
 	//添加监听的外部地址
 	addrs["0x96e9393d557071ad7a58c8c2a9db5bcbbfa3ed64"] = openwallet.ScanTargetResult{SourceKey: "sender", Exist: true}
-	addrs["0x4492da4ea423b61ad426bd4ce159a8dfbcfcabdd"] = openwallet.ScanTargetResult{SourceKey: "receiver", Exist: true}
+	addrs["0x6ba8b90e2fbb862b01087698c826d046071fdd7b"] = openwallet.ScanTargetResult{SourceKey: "receiver", Exist: true}
 
 	scanTargetFunc := func(target openwallet.ScanTargetParam) openwallet.ScanTargetResult {
 		if target.ScanTargetType == openwallet.ScanTargetTypeAccountAddress {
