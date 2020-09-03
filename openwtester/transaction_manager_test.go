@@ -174,7 +174,7 @@ func TestGetAddressVerify(t *testing.T) {
 	flag = addrDec.AddressVerify("6541a59bd17cf20f058e8b5377f034a32843410f")
 	log.Infof("flag: %v, expect: false", flag)
 
-	flag = addrDec.AddressVerify("0x6541a59bd17cf20f058e8b5377f034a32843410f")
+	flag = addrDec.AddressVerify("0x562ff43493d6a2baf88358b38cbc268b7cbb8a89")
 	log.Infof("flag: %v, expect: true", flag)
 
 }
